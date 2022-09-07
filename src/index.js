@@ -1,17 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { ThemeProvider } from 'styled-components';
+import GlobalStyle from './styles/GlobalStyle';
+import variables from './styles/variables';
+import theme from './styles/theme';
+import AppRoutes from './routing/AppRouter';
+import { AuthProvider } from './context/auth';
+import { createStore } from 'redux';
+import rootReducers from 'modules';
+import 'antd/dist/antd.min.css';
+import { Provider } from 'react-redux';
+
+const store = createStore(rootReducers);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <AuthProvider>
+    <ThemeProvider theme={{ style: theme, variables }}>
+      <Provider store={store}>
+        <GlobalStyle />
+        <AppRoutes />
+      </Provider>
+    </ThemeProvider>
+  </AuthProvider>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
