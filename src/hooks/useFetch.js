@@ -32,18 +32,27 @@ const useFetch = (page, currentPage, perPage) => {
           sort: sort_type,
         };
 
-        await getUsersApi(payloadUser)
-          .then(({ data }) => {
-            if (data.success) {
-              setBuckets(data.data.data);
-              setTotalPage(data.data.total);
-            }
-          })
-          .catch(({ response }) => {
-            if (response.status === 401) {
-              logout();
-            }
-          });
+        const { data } = await getUsersApi(payloadUser);
+        try {
+          setBuckets(data.data.data);
+          setTotalPage(data.data.total);
+        } catch ({ response }) {
+          if (response.status === 401) {
+            logout();
+          }
+        }
+
+        // .then(({ data }) => {
+        //   if (data.success) {
+        //     setBuckets(data.data.data);
+        //     setTotalPage(data.data.total);
+        //   }
+        // })
+        // .catch(({ response }) => {
+        //   if (response.status === 401) {
+        //     logout();
+        //   }
+        // });
         break;
 
       case 'preuser':
@@ -55,7 +64,7 @@ const useFetch = (page, currentPage, perPage) => {
           orderBy: sort_type,
         };
 
-        await getPreRsrvUserApi(payloadPreUser)
+        getPreRsrvUserApi(payloadPreUser)
           .then(({ data }) => {
             setBuckets(data.data);
             setTotalPage(data.total);
@@ -76,7 +85,7 @@ const useFetch = (page, currentPage, perPage) => {
           orderBy: sort_type,
         };
 
-        await getPreRsrvUserApi(payloadRankUser)
+        getPreRsrvUserApi(payloadRankUser)
           .then(({ data }) => {
             setBuckets(data.data);
             setTotalPage(data.total);
@@ -92,7 +101,7 @@ const useFetch = (page, currentPage, perPage) => {
         const payloadResvStatus = {
           ...store.preReservFilter,
         };
-        await getPreRsrvApi(payloadResvStatus)
+        getPreRsrvApi(payloadResvStatus)
           .then(({ data }) => {
             setBuckets(data);
             setTotalPage(data.ratio);
@@ -105,7 +114,7 @@ const useFetch = (page, currentPage, perPage) => {
         break;
 
       case 'channel':
-        await getChannelApi()
+        getChannelApi()
           .then(({ data }) => {
             if (data.success) {
               setBuckets(data.list);
@@ -119,7 +128,7 @@ const useFetch = (page, currentPage, perPage) => {
         break;
 
       case 'nation':
-        await getNationApi()
+        getNationApi()
           .then(({ data }) => {
             if (data.success) {
               setBuckets(data.list);

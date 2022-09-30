@@ -55,6 +55,7 @@ const Excel = ({ page }) => {
 
   const createExcel = () => {
     if (filters.start_at && filters.end_at) {
+      fetchExcelData();
       const xlsx = require('xlsx');
       const book = xlsx.utils.book_new();
       const users = xlsx.utils.json_to_sheet(excelData);
@@ -64,10 +65,6 @@ const Excel = ({ page }) => {
       openNotification();
     }
   };
-
-  useEffect(() => {
-    fetchExcelData();
-  }, [fetchExcelData]);
 
   return (
     <>
